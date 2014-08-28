@@ -4,8 +4,20 @@
   "description": "Basic API based on Node + Express",
   "main": "server.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "make test"
   },
   "author": "Carlos Azaustre <cazaustre@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.21.4",
+    "gulp": "^3.8.7",
+    "chai-as-promised": "^4.1.1",
+    "supertest": "^0.13.0",
+    "gulp-mocha": "^1.0.0"
+  },
+  "dependencies": {
+    "express": "^4.8.6",
+    "winston": "^0.7.3"
+  }
 }

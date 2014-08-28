@@ -7,6 +7,7 @@ $ git clone <project>
 $ cd <project>
 $ npm install
 $ npm install -g gulp
+$ npm install -g mocha
 ```
 
 ## Execute
