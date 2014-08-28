@@ -1,0 +1,11 @@
+{
+  "name": "notes",
+  "version": "0.0.0",
+  "description": "Basic API based on Node + Express",
+  "main": "server.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": "Carlos Azaustre <cazaustre@gmail.com>",
+  "license": "MIT"
+}
