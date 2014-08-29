@@ -6,13 +6,14 @@ gulp.task('test', function() {
       .pipe(mocha({
         reporter: 'spec',
         globals: {
-          chai: require('chai')
+          chai: require('chai'),
+          expect : require('chai').expect
         }
       }));
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['./test/*.js'], ['test']);
+  gulp.watch(['./test/*.js', './server.js'], ['test']);
 });
 
 gulp.task('default', ['watch']);

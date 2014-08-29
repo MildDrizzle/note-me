@@ -1,4 +1,5 @@
 var request = require('supertest');
+var expect = require('chai').expect;
 var api = require('../server');
 var host = process.env.API_TEST_HOST || api;
 
@@ -24,10 +25,10 @@ describe('Notes collection [/notes]', function() {
           .expect(201)
           .expect('Content-Type', /application\/json/)
           .end(function(err, res) {
-            var note;
+            var notes;
 
             var body = res.body;
-            console.log(body);
+            console.log('body', body);
 
             // Note exists
             expect(body).to.have.property('note');
