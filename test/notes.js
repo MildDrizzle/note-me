@@ -1,5 +1,6 @@
 var request = require('supertest-as-promised');
 var expect = require('chai').expect;
+var _ = require('lodash');
 var api = require('../server.js');
 var host = process.env.API_TEST_HOST || api;
 
@@ -242,9 +243,8 @@ describe('Notes Collection [/notes]', function() {
         id2 = res.body.note.id;
         return request.get('/notes')
           .set('Accept', 'application/json')
-          .send()
           .expect(200)
-          .expect('Contenty-Type', /application\/json/)
+          .expect('Content-Type', /application\/json/)
       }, done)
       .then(function assertions(res) {
         var body = res.body;
@@ -267,7 +267,7 @@ describe('Notes Collection [/notes]', function() {
         // Note2 properties
         expect(note2).to.have.property('id', id2);
         expect(note2).to.have.property('title', 'Second note');
-        expect(note2).to.have.property('description', 'Description of second note');
+        expect(note2).to.have.property('description', 'Description of the second note');
         expect(note2).to.have.property('type', 'text');
         expect(note2).to.have.property('body', 'the body of the second note');
 
