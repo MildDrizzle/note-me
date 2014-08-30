@@ -201,4 +201,79 @@ describe('Notes Collection [/notes]', function() {
     });
   });
 
+  describe('GET /notes/', function() {
+    it('should be get all the notes', function(done) {
+      var id1;
+      var id2;
+
+      var data1 = {
+        "note": {
+          "title": "A new note",
+          "description": "Description of the note",
+          "type": "text",
+          "body": "the body of the note"
+        }
+      };
+      var data2 = {
+        "note": {
+          "title": "Second note",
+          "description": "Description of the second note",
+          "type": "text",
+          "body": "the body of the second note"
+        }
+      };
+
+      request
+        .post('/notes')
+        .set('Accept', 'application/json')
+        .send(data1)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+      .then(function createAnotherNote(res) {
+        id1 = res.body.note.id;
+        return request
+          .post('/notes')
+          .set('Accept', 'application/json')
+          .send(data2)
+          .expect(201)
+          .expect('Content-Type', /application\/json/)
+      })
+      .then(function getNotes(res) {
+        id2 = res.body.note.id;
+        return request.get('/notes')
+          .set('Accept', 'application/json')
+          .send()
+          .expect(200)
+          .expect('Contenty-Type', /application\/json/)
+      }, done)
+      .then(function assertions(res) {
+        var body = res.body;
+        expect(body).to.have.property('notes');
+        expect(body.notes)
+          .to.be.an('array')
+          .and.to.have.length.above(2);
+
+        var notes = body.notes;
+        var note1 = _.find(notes, { id: id1 });
+        var note2 = _.find(notes, { id: id2 });
+
+        // Note1 properties
+        expect(note1).to.have.property('id', id1);
+        expect(note1).to.have.property('title', 'A new note');
+        expect(note1).to.have.property('description', 'Description of the note');
+        expect(note1).to.have.property('type', 'text');
+        expect(note1).to.have.property('body', 'the body of the note');
+
+        // Note2 properties
+        expect(note2).to.have.property('id', id2);
+        expect(note2).to.have.property('title', 'Second note');
+        expect(note2).to.have.property('description', 'Description of second note');
+        expect(note2).to.have.property('type', 'text');
+        expect(note2).to.have.property('body', 'the body of the second note');
+
+        done();
+      }, done);
+    });
+  });
+
 });
