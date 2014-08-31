@@ -1,11 +1,13 @@
+'use strict';
+
 // Module dependencies
 var express = require('express');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 var logger = require('./lib/logger');
 
 // Locals
 var app = module.exports = express();
-var port = process.env.PORT | 3000;
+var port = process.env.PORT || 3000;
 
 // Middlewares
 app.use(bodyParser.json('application/json'));

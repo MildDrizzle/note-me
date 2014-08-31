@@ -16,7 +16,9 @@
     "supertest": "^0.13.0",
     "gulp-mocha": "^1.0.0",
     "expect": "^0.1.1",
-    "supertest-as-promised": "^1.0.0"
+    "supertest-as-promised": "^1.0.0",
+    "gulp-jshint": "^1.8.4",
+    "jshint-stylish": "^0.4.0"
   },
   "dependencies": {
     "express": "^4.8.6",

@@ -1,3 +1,5 @@
+'use strict';
+
 var request = require('supertest-as-promised');
 var expect = require('chai').expect;
 var _ = require('lodash');
@@ -9,11 +11,11 @@ request = request(host);
 function createNote() {
   var id;
   var data = {
-    "note": {
-      "title": "A new note",
-      "description": "Description of the note",
-      "type": "text",
-      "body": "the body of the note"
+    'note': {
+      'title': 'A new note',
+      'description': 'Description of the note',
+      'type': 'text',
+      'body': 'the body of the note'
     }
   };
 
@@ -26,18 +28,18 @@ function createNote() {
   .then(function getNote(res) {
     this.id = res.body.note.id;
   }.bind(this));
-};
+}
 
 describe('Notes Collection [/notes]', function() {
 
   describe('POST', function() {
     it('should be create a note', function(done) {
       var data = {
-        "note": {
-          "title": "A new note",
-          "description": "Description of the note",
-          "type": "text",
-          "body": "the body of the note"
+        'note': {
+          'title': 'A new note',
+          'description': 'Description of the note',
+          'type': 'text',
+          'body': 'the body of the note'
         }
       };
 
@@ -104,19 +106,19 @@ describe('Notes Collection [/notes]', function() {
         var id2;
 
         var data1 = {
-          "note": {
-            "title": "A new note",
-            "description": "Description of the note",
-            "type": "text",
-            "body": "the body of the note"
+          'note': {
+            'title': 'A new note',
+            'description': 'Description of the note',
+            'type': 'text',
+            'body': 'the body of the note'
           }
         };
         var data2 = {
-          "note": {
-            "title": "A new note",
-            "description": "Description of the note",
-            "type": "text",
-            "body": "the body of the note"
+          'note': {
+            'title': 'A new note',
+            'description': 'Description of the note',
+            'type': 'text',
+            'body': 'the body of the note'
           }
         };
 
@@ -133,7 +135,7 @@ describe('Notes Collection [/notes]', function() {
             .set('Accept', 'application/json')
             .send(data2)
             .expect(201)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         })
         .then(function getNotes(res) {
           id2 = res.body.note.id;
@@ -141,7 +143,7 @@ describe('Notes Collection [/notes]', function() {
             .get('/notes')
             .set('Accept', 'application/json')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         }, done)
         .then(function assertions(res) {
           var body = res.body;
@@ -179,11 +181,11 @@ describe('Notes Collection [/notes]', function() {
     it('should be update a note with an id', function(done) {
       var id;
       var data = {
-        "note": {
-          "title": "A new note",
-          "description": "Description of the note",
-          "type": "text",
-          "body": "the body of the note"
+        'note': {
+          'title': 'A new note',
+          'description': 'Description of the note',
+          'type': 'text',
+          'body': 'the body of the note'
         }
       };
 
@@ -195,11 +197,11 @@ describe('Notes Collection [/notes]', function() {
         .expect('Content-Type', /application\/json/)
       .then(function getNote(res) {
         var update = {
-          "note": {
-            "title": "An updated note",
-            "description": "New Description of the note",
-            "type": "text",
-            "body": "the new body of the note"
+          'note': {
+            'title': 'An updated note',
+            'description': 'New Description of the note',
+            'type': 'text',
+            'body': 'the new body of the note'
           }
         };
 
@@ -209,7 +211,7 @@ describe('Notes Collection [/notes]', function() {
           .set('Accept', 'application/json')
           .send(update)
           .expect(200)
-          .expect('Content-Type', /application\/json/)
+          .expect('Content-Type', /application\/json/);
       }, done)
       .then(function assertions(res) {
         var note;
@@ -238,11 +240,11 @@ describe('Notes Collection [/notes]', function() {
     it('should be delete a note with an id', function(done) {
       var id;
       var data = {
-        "note": {
-          "title": "A new note",
-          "description": "Description of the note",
-          "type": "text",
-          "body": "the body of the note"
+        'note': {
+          'title': 'A new note',
+          'description': 'Description of the note',
+          'type': 'text',
+          'body': 'the body of the note'
         }
       };
 
@@ -258,7 +260,7 @@ describe('Notes Collection [/notes]', function() {
 
         return request.delete('/notes/' + id)
           .set('Accept', 'application/json')
-          .expect(204)
+          .expect(204);
       }, done)
 
       .then(function assertion(res) {
@@ -272,7 +274,7 @@ describe('Notes Collection [/notes]', function() {
         return request.get('/notes/' + id)
           .set('Accept', 'application/json')
           .send()
-          .expect(404)
+          .expect(404);
       }, done)
 
       .then(function confirmation(res) {
