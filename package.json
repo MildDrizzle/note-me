@@ -24,6 +24,7 @@
     "express": "^4.8.6",
     "winston": "^0.7.3",
     "body-parser": "^1.6.6",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "mongoose": "^3.8.15"
   }
 }

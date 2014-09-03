@@ -4,6 +4,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var logger = require('./lib/logger');
+var mongoose = require('mongoose');
 
 // Locals
 var app = module.exports = express();
@@ -18,7 +19,9 @@ app.use(notes);
 
 // Start server if we're not someone else's dependency
 if(!module.parent) {
-  app.listen(port, function() {
-    logger.info('API running at http://localhost:%s/', port);
+  mongoose.connect('mongodb://localhost/noteme-test', function() {
+    app.listen(port, function() {
+      logger.info('API running at http://localhost:%s/', port);
+    });
   });
 }

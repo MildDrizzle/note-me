@@ -22,7 +22,7 @@ gulp.task('test', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['./test/*.js', './lib/**/*.js'], ['test']);
+  gulp.watch(['./test/*.js', './lib/**/*.js'], ['test', 'lint']);
 });
 
 gulp.task('default', ['watch']);
