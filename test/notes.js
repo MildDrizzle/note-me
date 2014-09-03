@@ -73,7 +73,7 @@ describe('Notes Collection [/notes]', function() {
     });
   });
 
-  describe.only('GET', function() {
+  describe('GET', function() {
     beforeEach(createNote);
 
     it('should be get a note with an id', function(done) {
@@ -99,24 +99,19 @@ describe('Notes Collection [/notes]', function() {
     });
 
     it('should be get all the notes', function(done) {
-        var id1;
-        var id2;
+        var id1, id2;
 
         var data1 = {
-          'note': {
-            'title': 'A new note',
-            'description': 'Description of the note',
-            'type': 'text',
-            'body': 'the body of the note'
-          }
+          'title': 'A new note',
+          'description': 'Description of the note',
+          'type': 'text',
+          'content': 'the body of the note'
         };
         var data2 = {
-          'note': {
-            'title': 'A new note',
-            'description': 'Description of the note',
-            'type': 'text',
-            'body': 'the body of the note'
-          }
+          'title': 'A new note',
+          'description': 'Description of the note',
+          'type': 'text',
+          'content': 'the body of the note'
         };
 
         request
@@ -126,7 +121,7 @@ describe('Notes Collection [/notes]', function() {
           .expect(201)
           .expect('Content-Type', /application\/json/)
         .then(function createAnotherNote(res) {
-          id1 = res.body.note.id;
+          id1 = res.body.id;
           return request
             .post('/notes')
             .set('Accept', 'application/json')
@@ -135,7 +130,7 @@ describe('Notes Collection [/notes]', function() {
             .expect('Content-Type', /application\/json/);
         })
         .then(function getNotes(res) {
-          id2 = res.body.note.id;
+          id2 = res.body.id;
           return request
             .get('/notes')
             .set('Accept', 'application/json')
@@ -143,30 +138,30 @@ describe('Notes Collection [/notes]', function() {
             .expect('Content-Type', /application\/json/);
         }, done)
         .then(function assertions(res) {
-          var body = res.body;
+          console.log('RESPUESTA -------------------------');
+          console.log(res.body);
+          var notes = res.body;
 
-          expect(body).to.have.property('notes');
-          expect(body.notes)
+          expect(notes)
             .to.be.an('array')
             .and.to.have.length.above(2);
 
-          var notes = body.notes;
-          var note1 = _.find(notes, { id: id1 });
-          var note2 = _.find(notes, { id: id2 });
+          var note1 = notes[0];
+          var note2 = notes[1];
 
           // Note1 properties
-          expect(note1).to.have.property('id', id1);
+          expect(note1).to.have.property('_id', id1);
           expect(note1).to.have.property('title', 'A new note');
           expect(note1).to.have.property('description', 'Description of the note');
           expect(note1).to.have.property('type', 'text');
-          expect(note1).to.have.property('body', 'the body of the note');
+          expect(note1).to.have.property('content', 'the body of the note');
 
           // Note2 properties
-          expect(note2).to.have.property('id', id2);
+          expect(note2).to.have.property('_id', id2);
           expect(note2).to.have.property('title', 'A new note');
           expect(note2).to.have.property('description', 'Description of the note');
           expect(note2).to.have.property('type', 'text');
-          expect(note2).to.have.property('body', 'the body of the note');
+          expect(note2).to.have.property('content', 'the body of the note');
 
           done();
         }, done);
@@ -174,17 +169,15 @@ describe('Notes Collection [/notes]', function() {
 
   });
 
-  describe('PUT', function() {
+  describe.only('PUT', function() {
     it('should be update a note with an id', function(done) {
       var id;
       var data = {
-        'note': {
-          'title': 'A new note',
-          'description': 'Description of the note',
-          'type': 'text',
-          'body': 'the body of the note'
-        }
-      };
+        'title': 'A new note',
+        'description': 'Description of the note',
+        'type': 'text',
+        'content': 'the body of the note'
+    };
 
       request
         .post('/notes')
@@ -194,15 +187,13 @@ describe('Notes Collection [/notes]', function() {
         .expect('Content-Type', /application\/json/)
       .then(function getNote(res) {
         var update = {
-          'note': {
-            'title': 'An updated note',
-            'description': 'New Description of the note',
-            'type': 'text',
-            'body': 'the new body of the note'
-          }
+          'title': 'An updated note',
+          'description': 'New Description of the note',
+          'type': 'text',
+          'content': 'the new body of the note'
         };
 
-        id = res.body.note.id;
+        id = res.body._id;
 
         return request.put('/notes/' + id)
           .set('Accept', 'application/json')
@@ -211,22 +202,14 @@ describe('Notes Collection [/notes]', function() {
           .expect('Content-Type', /application\/json/);
       }, done)
       .then(function assertions(res) {
-        var note;
-        var body = res.body;
-
-        // Note exists
-        expect(body).to.have.property('note');
-        expect(body.note)
-          .to.be.an('array')
-          .and.to.have.length(1);
-        note = body.note[0];
+        var note = res.body;
 
         // Properties
-        expect(note).to.have.property('id', id);
+        expect(note).to.have.property('_id', id);
         expect(note).to.have.property('title', 'An updated note');
         expect(note).to.have.property('description', 'New Description of the note');
         expect(note).to.have.property('type', 'text');
-        expect(note).to.have.property('body', 'the new body of the note');
+        expect(note).to.have.property('content', 'the new body of the note');
         done();
       }, done);
 
