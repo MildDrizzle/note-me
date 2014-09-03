@@ -98,7 +98,7 @@ describe('Notes Collection [/notes]', function() {
 
     });
 
-    xit('should be get all the notes', function(done) {
+    it('should be get all the notes', function(done) {
         var id1;
         var id2;
 
