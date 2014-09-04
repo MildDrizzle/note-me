@@ -171,38 +171,22 @@ describe('Notes Collection [/notes]', function() {
   });
 
   describe('PUT', function() {
-    //before(createNote);
+    before(createNote);
     it('should be update a note with an id', function(done) {
-      var id;
-      var data = {
-        'title': 'A new note',
-        'description': 'Description of the note',
+      var id = this.id;
+
+      var update = {
+        'title': 'An updated note',
+        'description': 'New Description of the note',
         'type': 'text',
-        'content': 'the body of the note'
+        'content': 'the new body of the note'
       };
 
-      request
-        .post('/notes')
+      return request.put('/notes/' + id)
         .set('Accept', 'application/json')
-        .send(data)
-        .expect(201)
+        .send(update)
+        .expect(200)
         .expect('Content-Type', /application\/json/)
-      .then(function getNote(res) {
-        var update = {
-          'title': 'An updated note',
-          'description': 'New Description of the note',
-          'type': 'text',
-          'content': 'the new body of the note'
-        };
-
-        id = res.body._id;
-
-        return request.put('/notes/' + id)
-          .set('Accept', 'application/json')
-          .send(update)
-          .expect(200)
-          .expect('Content-Type', /application\/json/);
-      }, done)
       .then(function assertions(res) {
         var note = res.body;
 
@@ -219,32 +203,13 @@ describe('Notes Collection [/notes]', function() {
   });
 
   describe('DELETE', function() {
-    //before(createNote);
+    before(createNote);
     it('should be delete a note with an id', function(done) {
-      var id;
-      var data = {
-        'title': 'A new note',
-        'description': 'Description of the note',
-        'type': 'text',
-        'content': 'the body of the note'
-      };
-
-      request
-        .post('/notes')
-        .set('Accept', 'application/json')
-        .send(data)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
-      .then(function deleteNote(res) {
-        id = res.body._id;
-
+      var id = this.id;
         return request.delete('/notes/' + id)
           //.set('Accept', 'application/json')
           //.send()
-          .expect(204);
-      }, done)
-
+          .expect(204)
       .then(function assertion(res) {
         // Empty response
         var note = res.body;
