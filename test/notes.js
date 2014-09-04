@@ -32,11 +32,17 @@ function createNote() {
 }
 
 describe('Notes Collection [/notes]', function() {
+  // ------------------------------------------
+  // Helpers
+  // ------------------------------------------
+
   before(function () {
     mongoose.connect('mongodb://localhost/noteme-test', function () {
       Note.remove({});
     });
   });
+
+  beforeEach(createNote);
 
   after(function () {
     mongoose.disconnect();
@@ -45,6 +51,10 @@ describe('Notes Collection [/notes]', function() {
   afterEach(function () {
     Note.remove({});
   });
+
+  // ------------------------------------------
+  // Tests
+  // ------------------------------------------
 
   describe('GET', function() {
     before(createNote);
