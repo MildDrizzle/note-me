@@ -26,8 +26,8 @@ function createNote() {
     .expect(201)
     .expect('Content-Type', /application\/json/)
   .then(function getNote(res) {
-    console.log(res.body);
     this.id = res.body._id;
+    this.note = res.body;
   }.bind(this));
 }
 
@@ -47,32 +47,17 @@ describe('Notes Collection [/notes]', function() {
   });
 
   describe('POST', function() {
+    before(createNote);
     it('should be create a note', function(done) {
-      var data = {
-        'title': 'A new note',
-        'description': 'Description of the note',
-        'type': 'text',
-        'content': 'the body of the note'
-      };
+      var note = this.note;
+      // Properties
+      expect(note).to.have.property('title', 'A new note');
+      expect(note).to.have.property('description', 'Description of the note');
+      expect(note).to.have.property('type', 'text');
+      expect(note).to.have.property('content', 'the body of the note');
+      expect(note).to.have.property('_id');
 
-      request
-        .post('/notes')
-        .set('Accept', 'application/json')
-        .send(data)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-        .end(function(err, res) {
-          var note = res.body;
-
-          // Properties
-          expect(note).to.have.property('title', 'A new note');
-          expect(note).to.have.property('description', 'Description of the note');
-          expect(note).to.have.property('type', 'text');
-          expect(note).to.have.property('content', 'the body of the note');
-          expect(note).to.have.property('_id');
-
-          done(err);
-        });
+      done();
     });
   });
 
@@ -207,8 +192,8 @@ describe('Notes Collection [/notes]', function() {
     it('should be delete a note with an id', function(done) {
       var id = this.id;
         return request.delete('/notes/' + id)
-          //.set('Accept', 'application/json')
-          //.send()
+          .set('Accept', 'application/json')
+          .send()
           .expect(204)
       .then(function assertion(res) {
         // Empty response
