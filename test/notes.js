@@ -46,18 +46,61 @@ describe('Notes Collection [/notes]', function() {
     Note.remove({});
   });
 
-  describe('POST', function() {
+  describe('GET', function() {
     before(createNote);
-    it('should be create a note', function(done) {
-      var note = this.note;
-      // Properties
-      expect(note).to.have.property('title', 'A new note');
-      expect(note).to.have.property('description', 'Description of the note');
-      expect(note).to.have.property('type', 'text');
-      expect(note).to.have.property('content', 'the body of the note');
-      expect(note).to.have.property('_id');
+    it('should be get all the notes', function(done) {
+        var id1 = this.id;
+        console.log('ID1: ' + id1);
+        var id2;
 
-      done();
+        var data2 = {
+          'title': 'A new note',
+          'description': 'Description of the note',
+          'type': 'text',
+          'content': 'the body of the note'
+        };
+
+        return request
+          .post('/notes')
+          .set('Accept', 'application/json')
+          .send(data2)
+          .expect(201)
+          .expect('Content-Type', /application\/json/)
+        .then(function getNotes(res) {
+          id2 = res.body.id;
+          console.log('ID2: ' + id2);
+          return request
+            .get('/notes')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+        }, done)
+        .then(function assertions(res) {
+          var notes = res.body;
+
+          expect(notes)
+            .to.be.an('array')
+            .and.to.have.length.above(1);
+
+          var note1 = notes[0];
+          var note2 = notes[1];
+
+          // Note1 properties
+          expect(note1).to.have.property('_id', id1);
+          expect(note1).to.have.property('title', 'A new note');
+          expect(note1).to.have.property('description', 'Description of the note');
+          expect(note1).to.have.property('type', 'text');
+          expect(note1).to.have.property('content', 'the body of the note');
+
+          // Note2 properties
+          expect(note2).to.have.property('_id', id2);
+          expect(note2).to.have.property('title', 'A new note');
+          expect(note2).to.have.property('description', 'Description of the note');
+          expect(note2).to.have.property('type', 'text');
+          expect(note2).to.have.property('content', 'the body of the note');
+
+          done();
+        }, done);
     });
   });
 
@@ -86,72 +129,18 @@ describe('Notes Collection [/notes]', function() {
     });
   });
 
-  describe('GET', function() {
-    it('should be get all the notes', function(done) {
-        var id1, id2;
+  describe('POST', function() {
+    before(createNote);
+    it('should be create a note', function(done) {
+      var note = this.note;
+      // Properties
+      expect(note).to.have.property('title', 'A new note');
+      expect(note).to.have.property('description', 'Description of the note');
+      expect(note).to.have.property('type', 'text');
+      expect(note).to.have.property('content', 'the body of the note');
+      expect(note).to.have.property('_id');
 
-        var data1 = {
-          'title': 'A new note',
-          'description': 'Description of the note',
-          'type': 'text',
-          'content': 'the body of the note'
-        };
-        var data2 = {
-          'title': 'A new note',
-          'description': 'Description of the note',
-          'type': 'text',
-          'content': 'the body of the note'
-        };
-
-        request
-          .post('/notes')
-          .set('Accept', 'application/json')
-          .send(data1)
-          .expect(201)
-          .expect('Content-Type', /application\/json/)
-        .then(function createAnotherNote(res) {
-          id1 = res.body.id;
-          return request
-            .post('/notes')
-            .set('Accept', 'application/json')
-            .send(data2)
-            .expect(201)
-            .expect('Content-Type', /application\/json/);
-        })
-        .then(function getNotes(res) {
-          id2 = res.body.id;
-          return request
-            .get('/notes')
-            .set('Accept', 'application/json')
-            .expect(200)
-            .expect('Content-Type', /application\/json/);
-        }, done)
-        .then(function assertions(res) {
-          var notes = res.body;
-
-          expect(notes)
-            .to.be.an('array')
-            .and.to.have.length.above(1);
-
-          var note1 = notes[0];
-          var note2 = notes[1];
-
-          // Note1 properties
-          expect(note1).to.have.property('_id', id1);
-          expect(note1).to.have.property('title', 'A new note');
-          expect(note1).to.have.property('description', 'Description of the note');
-          expect(note1).to.have.property('type', 'text');
-          expect(note1).to.have.property('content', 'the body of the note');
-
-          // Note2 properties
-          expect(note2).to.have.property('_id', id1);
-          expect(note2).to.have.property('title', 'A new note');
-          expect(note2).to.have.property('description', 'Description of the note');
-          expect(note2).to.have.property('type', 'text');
-          expect(note2).to.have.property('content', 'the body of the note');
-
-          done();
-        }, done);
+      done();
     });
   });
 
