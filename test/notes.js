@@ -112,10 +112,10 @@ describe('Notes Collection [/notes]', function() {
           'content': 'the body of the note'
         };
         var data2 = {
-          'title': 'A second note',
-          'description': 'Description of the second note',
+          'title': 'A new note',
+          'description': 'Description of the note',
           'type': 'text',
-          'content': 'the body of the second note'
+          'content': 'the body of the note'
         };
 
         request
@@ -148,8 +148,8 @@ describe('Notes Collection [/notes]', function() {
             .to.be.an('array')
             .and.to.have.length.above(1);
 
-          var note1 = notes[2];
-          var note2 = notes[3];
+          var note1 = notes[0];
+          var note2 = notes[1];
 
           // Note1 properties
           expect(note1).to.have.property('_id', id1);
@@ -159,11 +159,11 @@ describe('Notes Collection [/notes]', function() {
           expect(note1).to.have.property('content', 'the body of the note');
 
           // Note2 properties
-          expect(note2).to.have.property('_id', id2);
-          expect(note2).to.have.property('title', 'A second note');
-          expect(note2).to.have.property('description', 'Description of the second note');
+          expect(note2).to.have.property('_id', id1);
+          expect(note2).to.have.property('title', 'A new note');
+          expect(note2).to.have.property('description', 'Description of the note');
           expect(note2).to.have.property('type', 'text');
-          expect(note2).to.have.property('content', 'the body of the second note');
+          expect(note2).to.have.property('content', 'the body of the note');
 
           done();
         }, done);
